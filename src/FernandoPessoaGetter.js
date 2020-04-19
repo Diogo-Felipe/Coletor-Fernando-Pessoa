@@ -83,4 +83,47 @@ module.exports = {
 
         return texto;
     },
+
+    async getObras() {
+        const browser = await puppeteer.launch();
+        let page = await browser.newPage();
+        let texto;
+        
+        console.log('Acessando http://arquivopessoa.net/textos');
+        for (let i = 4; i < 4544; i++) {
+
+            await page.goto('http://arquivopessoa.net/textos/'+ i, {waitUntil: 'load'});  
+    
+            let obra = await page.evaluate(() => {
+                const element_prosa = document.querySelector('.texto-prosa');
+                const element_poema = document.querySelector('.texto-poesia');
+                if(element_prosa != null){
+                    return element_prosa.innerText;
+                } else if(element_poema != null) {
+                    return element_prosa.innerText;
+                } else {
+                    return null;
+                }
+            });
+
+            if(obra != null){
+                texto += obra;
+                texto += '\n';
+            }
+
+            console.log(i + '/4543 Páginas Lidas');
+        }
+
+
+        fs.writeFile("C:\\Users\\dlcfe\\Documents\\FernandoPessoa\\Prosa-Fernando-Pessoa.txt", texto, function(erro) {
+
+            if(erro) {
+                throw erro;
+            }
+
+            console.log("Arquivo salvo");
+        }); 
+
+        return texto;
+    },
 }
