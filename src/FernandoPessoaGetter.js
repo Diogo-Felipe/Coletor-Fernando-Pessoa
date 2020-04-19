@@ -54,7 +54,7 @@ module.exports = {
 
             await page.goto('http://arquivopessoa.net/textos/'+ i, {waitUntil: 'load'});  
     
-            let poema = await page.evaluate(() => {
+            let prosa = await page.evaluate(() => {
                 const element = document.querySelector('.texto-prosa');
                 if(element != null){
                     return element.innerText;
@@ -63,8 +63,8 @@ module.exports = {
                 }
             });
 
-            if(poema != null){
-                texto += poema;
+            if(prosa != null){
+                texto += prosa;
                 texto += '\n';
             }
 
@@ -82,5 +82,5 @@ module.exports = {
         }); 
 
         return texto;
-    }
+    },
 }
